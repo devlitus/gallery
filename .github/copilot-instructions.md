@@ -463,3 +463,4 @@ export default defineConfig({
 - https://vitest.dev/api/assert-type.html
 - https://vitest.dev/guide/cli.html
 - https://vitest.dev/guide/test-context.html
+- https://docs.astro.build/en/guides/integrations-guide/netlify/

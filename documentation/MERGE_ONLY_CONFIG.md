@@ -265,10 +265,34 @@ on:
 
 ## 🚀 **Estado Final**
 
-✅ **Pipeline optimizado** para merges únicamente ✅ **75% menos uso** de
-recursos GitHub Actions  
-✅ **Deploy solo código estable** que llegue a main ✅ **Documentación
-completa** de la nueva configuración ✅ **Tests pasando** y build funcionando
-correctamente
+✅ **Pipeline optimizado** para merges únicamente  
+✅ **75% menos uso** de recursos GitHub Actions  
+✅ **Deploy solo código estable** que llegue a main  
+✅ **Documentación completa** de la nueva configuración  
+✅ **Tests pasando** y build funcionando correctamente  
+✅ **Bug fix aplicado** - Corregido conflicto allow-licenses/deny-licenses
+
+## 🔧 **Corrección de Bug Aplicada**
+
+**Problema encontrado:**
+
+```
+Error: You cannot specify both allow-licenses and deny-licenses
+```
+
+**Solución aplicada:**
+
+```yaml
+# Antes (conflictivo):
+with:
+  fail-on-severity: high
+  allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC
+  deny-licenses: GPL-2.0, GPL-3.0
+
+# Después (corregido):
+with:
+  fail-on-severity: high
+  allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC
+```
 
 **¡La configuración merge-only está lista y funcionando!** 🎉

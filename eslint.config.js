@@ -54,6 +54,7 @@ export default [
       'dist/**/*',
       'node_modules/**/*',
       '.astro/**/*',
+      '.netlify/**/*',
       'public/**/*',
       '*.config.js',
       '*.config.mjs',
