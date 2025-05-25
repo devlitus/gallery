@@ -23,7 +23,7 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'warn',
 
       // General rules
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
@@ -43,6 +43,10 @@ export default [
       // Astro specific rules
       'astro/no-conflict-set-directives': 'error',
       'astro/no-unused-define-vars-in-style': 'error',
+      // Permitir non-null assertions en archivos Astro para DOM manipulation
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      // Permitir console.error en bloques catch
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
   {

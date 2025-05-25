@@ -19,17 +19,6 @@ let error: string | null = null;
 
 try {
   images = await getImagesFromFolder('imageSD');
-
-  // Solo usar console.log en desarrollo
-  if (import.meta.env.DEV) {
-    console.log('=== GALERÍA DEBUG ===');
-    console.log("Obteniendo imágenes de la carpeta 'imageSD'...");
-    if (images.length > 0) {
-      console.log(`Imágenes encontradas: ${images.length}`);
-      console.log('Primera imagen:', images[0]);
-      console.log('URL generada:', generateThumbnailUrl(images[0].public_id));
-    }
-  }
 } catch (e) {
   if (import.meta.env.DEV) {
     console.error('Error al cargar imágenes:', e);
@@ -410,10 +399,5 @@ try {
     for (let k = 0; k < masonryItems.length; k++) {
       observer.observe(masonryItems[k]);
     }
-  }
-
-  // Solo mostrar logs en entorno de desarrollo
-  if (window.location.hostname === 'localhost') {
-    console.log('Galería masonry inicializada correctamente');
   }
 </script>

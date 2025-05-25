@@ -107,19 +107,6 @@ export function generateThumbnailUrl(publicId: string): string {
   // URL sin transformaciones de tamaño - imagen original con optimización de calidad
   const originalUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto/${publicId}`;
 
-  // También generar la URL usando el SDK de Cloudinary
-  const sdkUrl = cloudinary.url(publicId, {
-    quality: 'auto',
-    fetch_format: 'auto',
-    secure: true,
-  });
-
-  // Debug logging
-  if (import.meta.env.DEV) {
-    console.log(`Original URL for ${publicId}: ${originalUrl}`);
-    console.log(`SDK URL for ${publicId}: ${sdkUrl}`);
-  }
-
   // Usar la URL original sin restricciones de tamaño
   return originalUrl;
 }

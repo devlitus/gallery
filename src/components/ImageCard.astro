@@ -6,11 +6,6 @@ interface Props {
 }
 
 const { src, alt, publicId } = Astro.props;
-
-// Debug: Log the image URL
-if (import.meta.env.DEV) {
-  console.log(`ImageCard - Public ID: ${publicId}, URL: ${src}`);
-}
 ---
 
 <div

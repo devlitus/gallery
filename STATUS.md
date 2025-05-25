@@ -79,7 +79,6 @@ La aplicación está **completamente funcional** y lista para:
 - **Inicio:** http://localhost:4321/
 - **Galería:** http://localhost:4321/gallery
 - **Upload:** http://localhost:4321/upload
-- **Debug:** http://localhost:4321/debug _(temporal)_
 
 ---
 

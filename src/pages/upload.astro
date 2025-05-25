@@ -175,7 +175,6 @@ const pageData: PageData = {
         showSuccess(result.url);
         // Reset form
         selectedFile = null;
-        document.getElementById('preview-container')!.classList.add('hidden');
         (document.getElementById('file-upload') as HTMLInputElement).value = '';
       } else {
         throw new Error(result.error || 'Error desconocido');

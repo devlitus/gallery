@@ -27,6 +27,7 @@
     "format:check": "prettier --check .",
     "type-check": "astro check",
     "test": "vitest",
+    "test:ci": "vitest run",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
