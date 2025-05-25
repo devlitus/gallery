@@ -5,12 +5,47 @@
 El pipeline de CI/CD para la Galería de Imágenes con Cloudinary ha sido
 **completamente implementado** y está listo para usar.
 
+## 🔥 **CONFIGURACIÓN MERGE-ONLY**
+
+**¡IMPORTANTE!** El pipeline ahora está configurado para ejecutarse **solo en
+merges**, no en cada push o pull request.
+
+### 📋 **¿Cuándo se ejecuta el CI/CD?**
+
+✅ **SÍ se ejecuta cuando:**
+
+- Haces merge a la rama `main`
+- Ejecutas manualmente el workflow (`workflow_dispatch`)
+- Tags de versión (solo para releases)
+- Horario programado (CodeQL análisis semanal)
+
+❌ **NO se ejecuta cuando:**
+
+- Haces push a ramas feature
+- Abres pull requests
+- Haces commits en develop u otras ramas
+
+### 🎯 **Workflows afectados:**
+
+1. **CI/CD Principal** - Solo en merge a main
+2. **CodeQL Security** - Solo en merge a main + semanal
+3. **Dependency Review** - Solo en merge a main
+4. **Release Management** - Solo en tags (sin cambios)
+
+### 💡 **Ventajas de esta configuración:**
+
+- ⚡ **Menor uso de recursos** - No desperdicia minutos de GitHub Actions
+- 🎯 **Deploy solo código estable** - Solo se despliega lo que está en main
+- 🧹 **Menos ruido** - No notificaciones por cada push
+- 💰 **Ahorro de costos** - Especialmente importante en repos privados
+
 ### 🚀 ¿Qué se ha implementado?
 
 #### 📦 **4 Workflows de GitHub Actions**
 
 1. **CI/CD Principal** (`.github/workflows/ci.yml`)
 
+   - 🔥 **MODIFICADO**: Solo se ejecuta en merges a main
    - Tests automáticos con Vitest
    - Linting con ESLint y verificación TypeScript
    - Build de producción
@@ -19,17 +54,20 @@ El pipeline de CI/CD para la Galería de Imágenes con Cloudinary ha sido
 
 2. **Análisis de Seguridad** (`.github/workflows/codeql.yml`)
 
+   - 🔥 **MODIFICADO**: Solo se ejecuta en merges a main
    - Escaneo de vulnerabilidades con CodeQL
    - Análisis de patrones de seguridad
    - Detección automática de problemas
 
 3. **Revisión de Dependencias** (`.github/workflows/dependency-review.yml`)
 
-   - Review automático de dependencias en PRs
+   - 🔥 **MODIFICADO**: Solo se ejecuta en merges a main
+   - Review automático de dependencias
    - Alertas de seguridad
    - Dependabot configurado
 
 4. **Gestión de Releases** (`.github/workflows/release.yml`)
+   - ✅ Solo se ejecuta en tags (sin cambios)
    - Releases automáticos basados en tags
    - Generación de changelog
    - Publicación automática

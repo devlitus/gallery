@@ -2,9 +2,7 @@ name: 🔍 CodeQL Security Analysis
 
 on:
   push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+    branches: [main]
   schedule:
     # Ejecutar análisis semanal los lunes a las 9:00 UTC
     - cron: '0 9 * * 1'

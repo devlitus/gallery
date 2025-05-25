@@ -1,8 +1,9 @@
 name: 📦 Dependency Review
 
 on:
-  pull_request:
-    branches: [main, develop]
+  # Solo se ejecuta en pushes a main (merges)
+  push:
+    branches: [main]
 
 permissions:
   contents: read
