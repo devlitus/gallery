@@ -1,48 +1,154 @@
-# Astro Starter Kit: Basics
+# Galería de Imágenes con Cloudinary
 
-```sh
-npm create astro@latest -- --template basics
+Una aplicación moderna de galería de imágenes construida con Astro, TypeScript y Tailwind CSS, integrada con Cloudinary para almacenamiento y optimización de imágenes.
+
+## ✨ Características
+
+- 🖼️ **Galería de Imágenes**: Visualiza imágenes desde la carpeta "imageSD" de Cloudinary
+- 📤 **Subida de Imágenes**: Interfaz drag-and-drop para subir nuevas imágenes
+- 🎨 **Diseño Responsivo**: Diseño moderno y responsivo con Tailwind CSS
+- ⚡ **Optimización Automática**: Cloudinary optimiza automáticamente las imágenes
+- 🔍 **Vista Previa**: Previsualización de imágenes antes de subirlas
+- 🛡️ **Validación**: Validación de tipos y tamaños de archivo
+- 📱 **Mobile-First**: Optimizado para dispositivos móviles
+
+## 🚀 Configuración
+
+### Prerrequisitos
+
+- Node.js 18+
+- Cuenta de Cloudinary
+- npm o yarn
+
+### Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto con tus credenciales de Cloudinary:
+
+```env
+CLOUDINARY_CLOUDNAME=tu_cloud_name
+CLOUDINARY_APIKEY=tu_api_key
+CLOUDINARY_APISECRET=tu_api_secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+### Instalación
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+```bash
+# Instalar dependencias
+npm install
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+# Ejecutar en modo desarrollo
+npm run dev
 
-## 🚀 Project Structure
+# Construir para producción
+npm run build
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+# Vista previa de la construcción
+npm run preview
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 📁 Estructura del Proyecto
 
-## 🧞 Commands
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── FileUpload.astro # Componente de subida de archivos
+│   └── ImageCard.astro  # Tarjeta para mostrar imágenes
+├── layouts/
+│   └── Layout.astro     # Layout principal
+├── pages/
+│   ├── index.astro      # Página de inicio
+│   ├── gallery.astro    # Página de galería
+│   ├── upload.astro     # Página de subida
+│   └── api/
+│       └── upload.ts    # API endpoint para subir imágenes
+├── utils/
+│   └── cloudinary.ts    # Utilidades de Cloudinary
+└── styles/
+    └── global.css       # Estilos globales con Tailwind
+```
 
-All commands are run from the root of the project, from a terminal:
+## 🛠️ Tecnologías Utilizadas
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **[Astro](https://astro.build)** - Framework web moderno
+- **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
+- **[Tailwind CSS](https://tailwindcss.com)** - Framework de CSS utilitario
+- **[Cloudinary](https://cloudinary.com)** - Gestión y optimización de imágenes
 
-## 👀 Want to learn more?
+## 📖 Uso
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Página de Inicio
+
+Navega a `http://localhost:4321` para ver la página principal con acceso a:
+
+- Galería de imágenes
+- Subida de nuevas imágenes
+
+### Ver Galería
+
+Ve a `/gallery` para:
+
+- Explorar todas las imágenes de la carpeta "imageSD"
+- Ver miniaturas optimizadas
+- Acceder a las imágenes originales
+- Copiar URLs de las imágenes
+
+### Subir Imágenes
+
+Ve a `/upload` para:
+
+- Seleccionar archivos mediante drag-and-drop o click
+- Previsualizar imágenes antes de subirlas
+- Validar formatos y tamaños
+- Subir a la carpeta "imageSD" de Cloudinary
+
+### Formatos Soportados
+
+- JPEG/JPG
+- PNG
+- GIF
+- WEBP
+- Tamaño máximo: 10MB
+
+## 🔧 Configuración de Cloudinary
+
+1. **Crear una cuenta**: Regístrate en [Cloudinary](https://cloudinary.com)
+2. **Obtener credenciales**: Ve a Dashboard → Settings → Account
+3. **Configurar carpeta**: La aplicación usa la carpeta "imageSD" por defecto
+4. **Variables de entorno**: Configura las credenciales en el archivo `.env`
+
+## 🚢 Despliegue
+
+Para desplegar en producción, necesitarás configurar un adaptador de Astro apropiado para tu plataforma:
+
+```bash
+# Ejemplo para Vercel
+npm install @astrojs/vercel
+
+# Ejemplo para Netlify
+npm install @astrojs/netlify
+```
+
+Luego actualiza `astro.config.mjs` con el adaptador correspondiente.
+
+## 🤝 Contribución
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 🛟 Soporte
+
+Si tienes problemas o preguntas:
+
+1. Revisa la [documentación de Astro](https://docs.astro.build)
+2. Consulta la [documentación de Cloudinary](https://cloudinary.com/documentation)
+3. Abre un issue en este repositorio
