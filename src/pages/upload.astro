@@ -1,6 +1,6 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import FileUpload from "../components/FileUpload.astro";
+import Layout from '../layouts/Layout.astro';
+import FileUpload from '../components/FileUpload.astro';
 
 interface PageData {
   title: string;
@@ -8,57 +8,50 @@ interface PageData {
 }
 
 const pageData: PageData = {
-  title: "Subir Imagen",
-  description: "Sube nuevas imágenes a la galería de Cloudinary",
+  title: 'Subir Imagen',
+  description: 'Sube nuevas imágenes a la galería de Cloudinary',
 };
 ---
 
 <Layout title={pageData.title} description={pageData.description}>
-  <div class="max-w-2xl mx-auto">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Subir Nueva Imagen</h1>
-      <p class="text-gray-600">
+  <div class='max-w-2xl mx-auto'>
+    <div class='mb-8'>
+      <h1 class='text-3xl font-bold text-gray-900 mb-4'>Subir Nueva Imagen</h1>
+      <p class='text-gray-600'>
         Selecciona una imagen para agregar a la carpeta "imageSD" en Cloudinary
       </p>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <form id="upload-form" enctype="multipart/form-data">
-        <FileUpload onFileChange="handleFileChange(event)" />
+    <div class='bg-white rounded-lg shadow-md p-6'>
+      <form id='upload-form' enctype='multipart/form-data'>
+        <FileUpload onFileChange='handleFileChange(event)' />
 
-        <div id="preview-container" class="mt-6 hidden">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">Vista previa:</h3>
-          <div class="flex items-start space-x-4">
-            <img
-              id="preview-image"
-              class="w-32 h-32 object-cover rounded-lg"
-              alt="Vista previa"
-            />
-            <div class="flex-1">
-              <p id="file-info" class="text-sm text-gray-600 mb-4"></p>
+        <div id='preview-container' class='mt-6 hidden'>
+          <h3 class='text-lg font-medium text-gray-900 mb-3'>Vista previa:</h3>
+          <div class='flex items-start space-x-4'>
+            <img id='preview-image' class='w-32 h-32 object-cover rounded-lg' alt='Vista previa' />
+            <div class='flex-1'>
+              <p id='file-info' class='text-sm text-gray-600 mb-4'></p>
               <button
-                type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                type='submit'
+                class='bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed'
                 disabled
               >
-                <span id="upload-text">Subir Imagen</span>
-                <span id="loading-text" class="hidden">Subiendo...</span>
+                <span id='upload-text'>Subir Imagen</span>
+                <span id='loading-text' class='hidden'>Subiendo...</span>
               </button>
             </div>
           </div>
         </div>
       </form>
 
-      <div id="result-container" class="mt-6 hidden">
+      <div id='result-container' class='mt-6 hidden'>
         <!-- Success/Error messages will be inserted here -->
       </div>
     </div>
 
-    <div class="mt-6 text-center">
-      <a
-        href="/gallery"
-        class="text-blue-600 hover:text-blue-700 transition-colors"
-      >
+    <div class='mt-6 text-center'>
+      <a href='/gallery' class='text-blue-600 hover:text-blue-700 transition-colors'>
         ← Volver a la galería
       </a>
     </div>
@@ -75,24 +68,16 @@ const pageData: PageData = {
     if (!file) return;
 
     // Validate file type
-    const validTypes = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-    ];
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
     if (!validTypes.includes(file.type)) {
-      showError(
-        "Tipo de archivo no válido. Solo se permiten imágenes JPG, PNG, GIF y WEBP."
-      );
+      showError('Tipo de archivo no válido. Solo se permiten imágenes JPG, PNG, GIF y WEBP.');
       return;
     }
 
     // Validate file size (10MB max)
     const maxSize = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSize) {
-      showError("El archivo es demasiado grande. El tamaño máximo es 10MB.");
+      showError('El archivo es demasiado grande. El tamaño máximo es 10MB.');
       return;
     }
 
@@ -101,20 +86,16 @@ const pageData: PageData = {
   }
 
   function showPreview(file: File) {
-    const previewContainer = document.getElementById("preview-container")!;
-    const previewImage = document.getElementById(
-      "preview-image"
-    ) as HTMLImageElement;
-    const fileInfo = document.getElementById("file-info")!;
-    const submitButton = document.querySelector(
-      'button[type="submit"]'
-    ) as HTMLButtonElement;
+    const previewContainer = document.getElementById('preview-container')!;
+    const previewImage = document.getElementById('preview-image') as HTMLImageElement;
+    const fileInfo = document.getElementById('file-info')!;
+    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
 
     // Show preview
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       previewImage.src = e.target?.result as string;
-      previewContainer.classList.remove("hidden");
+      previewContainer.classList.remove('hidden');
       submitButton.disabled = false;
     };
     reader.readAsDataURL(file);
@@ -125,7 +106,7 @@ const pageData: PageData = {
   }
 
   function showError(message: string) {
-    const resultContainer = document.getElementById("result-container")!;
+    const resultContainer = document.getElementById('result-container')!;
     resultContainer.innerHTML = `
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">
         <div class="flex">
@@ -137,11 +118,11 @@ const pageData: PageData = {
         </div>
       </div>
     `;
-    resultContainer.classList.remove("hidden");
+    resultContainer.classList.remove('hidden');
   }
 
-  function showSuccess(imageUrl: string) {
-    const resultContainer = document.getElementById("result-container")!;
+  function showSuccess(_imageUrl: string) {
+    const resultContainer = document.getElementById('result-container')!;
     resultContainer.innerHTML = `
       <div class="bg-green-50 border border-green-200 rounded-lg p-4">
         <div class="flex">
@@ -157,65 +138,59 @@ const pageData: PageData = {
         </div>
       </div>
     `;
-    resultContainer.classList.remove("hidden");
+    resultContainer.classList.remove('hidden');
   }
 
   // Handle form submission
-  document
-    .getElementById("upload-form")!
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
+  document.getElementById('upload-form')!.addEventListener('submit', async e => {
+    e.preventDefault();
 
-      if (!selectedFile) return;
+    if (!selectedFile) return;
 
-      const submitButton = document.querySelector(
-        'button[type="submit"]'
-      ) as HTMLButtonElement;
-      const uploadText = document.getElementById("upload-text")!;
-      const loadingText = document.getElementById("loading-text")!;
+    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const uploadText = document.getElementById('upload-text')!;
+    const loadingText = document.getElementById('loading-text')!;
 
-      // Show loading state
-      submitButton.disabled = true;
-      uploadText.classList.add("hidden");
-      loadingText.classList.remove("hidden");
+    // Show loading state
+    submitButton.disabled = true;
+    uploadText.classList.add('hidden');
+    loadingText.classList.remove('hidden');
 
-      try {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        if (result.success) {
-          showSuccess(result.url);
-          // Reset form
-          selectedFile = null;
-          document.getElementById("preview-container")!.classList.add("hidden");
-          (document.getElementById("file-upload") as HTMLInputElement).value =
-            "";
-        } else {
-          throw new Error(result.error || "Error desconocido");
-        }
-      } catch (error) {
-        showError(
-          error instanceof Error ? error.message : "Error al subir la imagen"
-        );
-      } finally {
-        // Reset button state
-        submitButton.disabled = false;
-        uploadText.classList.remove("hidden");
-        loadingText.classList.add("hidden");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showSuccess(result.url);
+        // Reset form
+        selectedFile = null;
+        document.getElementById('preview-container')!.classList.add('hidden');
+        (document.getElementById('file-upload') as HTMLInputElement).value = '';
+      } else {
+        throw new Error(result.error || 'Error desconocido');
+      }
+    } catch (error) {
+      showError(error instanceof Error ? error.message : 'Error al subir la imagen');
+    } finally {
+      // Reset button state
+      submitButton.disabled = false;
+      uploadText.classList.remove('hidden');
+      loadingText.classList.add('hidden');
+    }
+  });
 
   // Make functions global for inline event handlers
-  (window as any).handleFileChange = handleFileChange;
+  (window as Window & { handleFileChange?: typeof handleFileChange }).handleFileChange =
+    handleFileChange;
 </script>

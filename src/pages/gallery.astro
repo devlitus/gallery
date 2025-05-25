@@ -1,7 +1,8 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import ImageCard from "../components/ImageCard.astro";
-import { getImagesFromFolder, generateThumbnailUrl } from "../utils/cloudinary";
+import Layout from '../layouts/Layout.astro';
+import ImageCard from '../components/ImageCard.astro';
+import { getImagesFromFolder, generateThumbnailUrl } from '../utils/cloudinary';
+import type { CloudinaryResource } from '../utils/cloudinary';
 
 interface PageData {
   title: string;
@@ -9,49 +10,60 @@ interface PageData {
 }
 
 const pageData: PageData = {
-  title: "Galería de Imágenes",
-  description: "Explora la colección de imágenes desde Cloudinary",
+  title: 'Galería de Imágenes',
+  description: 'Explora la colección de imágenes desde Cloudinary',
 };
 
-let images: any[] = [];
+let images: CloudinaryResource[] = [];
 let error: string | null = null;
 
 try {
-  console.log("=== GALERÍA DEBUG ===");
-  console.log("Obteniendo imágenes de la carpeta 'imageSD'...");
+  images = await getImagesFromFolder('imageSD');
 
-  images = await getImagesFromFolder("imageSD");
-
-  console.log(`Imágenes encontradas: ${images.length}`);
-  if (images.length > 0) {
-    console.log("Primera imagen:", images[0]);
-    console.log("URL generada:", generateThumbnailUrl(images[0].public_id));
+  // Solo usar console.log en desarrollo
+  if (import.meta.env.DEV) {
+    console.log('=== GALERÍA DEBUG ===');
+    console.log("Obteniendo imágenes de la carpeta 'imageSD'...");
+    if (images.length > 0) {
+      console.log(`Imágenes encontradas: ${images.length}`);
+      console.log('Primera imagen:', images[0]);
+      console.log('URL generada:', generateThumbnailUrl(images[0].public_id));
+    }
   }
 } catch (e) {
-  console.error("Error al cargar imágenes:", e);
-  error =
-    e instanceof Error ? e.message : "Error desconocido al cargar las imágenes";
+  if (import.meta.env.DEV) {
+    console.error('Error al cargar imágenes:', e);
+  }
+  error = e instanceof Error ? e.message : 'Error desconocido al cargar las imágenes';
 }
 ---
 
-<Layout title={pageData.title} description={pageData.description}>  <!-- Header mejorado con gradiente -->
-  <div class="mb-12 text-center relative">
-    <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-3xl"></div>
-    <div class="relative bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-xl">
-      <h1 class="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+<Layout title={pageData.title} description={pageData.description}>
+  <!-- Header mejorado con gradiente -->
+  <div class='mb-12 text-center relative'>
+    <div
+      class='absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-3xl'
+    >
+    </div>
+    <div
+      class='relative bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-xl'
+    >
+      <h1
+        class='text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4'
+      >
         ✨ Galería de Imágenes
       </h1>
-      <p class="text-xl text-gray-600 mb-6">
+      <p class='text-xl text-gray-600 mb-6'>
         Descubre la colección de imágenes almacenadas en Cloudinary
       </p>
-      <div class="flex items-center justify-center gap-4 text-sm text-gray-500">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+      <div class='flex items-center justify-center gap-4 text-sm text-gray-500'>
+        <div class='flex items-center gap-2'>
+          <div class='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
           <span>Carpeta: "imageSD"</span>
         </div>
-        <div class="w-1 h-4 bg-gray-300 rounded-full"></div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+        <div class='w-1 h-4 bg-gray-300 rounded-full'></div>
+        <div class='flex items-center gap-2'>
+          <div class='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></div>
           <span>Diseño Masonry Adaptativo</span>
         </div>
       </div>
@@ -60,14 +72,12 @@ try {
 
   {
     error && (
-      <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-        <div class="flex">
-          <div class="text-red-500 text-xl mr-3">⚠️</div>
+      <div class='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
+        <div class='flex'>
+          <div class='text-red-500 text-xl mr-3'>⚠️</div>
           <div>
-            <h3 class="text-red-800 font-medium">
-              Error al cargar las imágenes
-            </h3>
-            <p class="text-red-700 text-sm mt-1">{error}</p>
+            <h3 class='text-red-800 font-medium'>Error al cargar las imágenes</h3>
+            <p class='text-red-700 text-sm mt-1'>{error}</p>
           </div>
         </div>
       </div>
@@ -76,71 +86,71 @@ try {
 
   {
     !error && images.length === 0 && (
-      <div class="text-center py-12">
-        <div class="text-gray-400 text-6xl mb-4">📷</div>
-        <h2 class="text-2xl font-semibold text-gray-700 mb-2">
-          No hay imágenes
-        </h2>
-        <p class="text-gray-500 mb-6">
+      <div class='text-center py-12'>
+        <div class='text-gray-400 text-6xl mb-4'>📷</div>
+        <h2 class='text-2xl font-semibold text-gray-700 mb-2'>No hay imágenes</h2>
+        <p class='text-gray-500 mb-6'>
           La carpeta "imageSD" está vacía. ¡Sube algunas imágenes para comenzar!
         </p>
         <a
-          href="/upload"
-          class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          href='/upload'
+          class='inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium'
         >
           Subir Primera Imagen
         </a>
       </div>
     )
   }
-
   {
     !error && images.length > 0 && (
-      <>        <!-- Barra de estadísticas y acciones -->
-        <div class="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div class="bg-white px-6 py-3 rounded-xl shadow-sm border border-gray-200">
-              <div class="text-3xl font-bold text-gray-900">
-                {images.length}
-              </div>
-              <div class="text-sm text-gray-600">
-                imagen{images.length !== 1 ? "es" : ""} encontrada{images.length !== 1 ? "s" : ""}
+      <>
+        {/* Barra de estadísticas y acciones */}
+        <div class='mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200'>
+          <div class='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
+            <div class='bg-white px-6 py-3 rounded-xl shadow-sm border border-gray-200'>
+              <div class='text-3xl font-bold text-gray-900'>{images.length}</div>
+              <div class='text-sm text-gray-600'>
+                imagen{images.length !== 1 ? 'es' : ''} encontrada{images.length !== 1 ? 's' : ''}
               </div>
             </div>
-            
-            <div class="flex flex-col gap-2">
-              <div class="flex items-center gap-2 text-sm text-gray-600">
-                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+
+            <div class='flex flex-col gap-2'>
+              <div class='flex items-center gap-2 text-sm text-gray-600'>
+                <div class='w-2 h-2 bg-purple-500 rounded-full' />
                 <span>Grid masonry adaptativo</span>
               </div>
-              <div class="flex items-center gap-2 text-sm text-gray-600">
-                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div class='flex items-center gap-2 text-sm text-gray-600'>
+                <div class='w-2 h-2 bg-green-500 rounded-full animate-pulse' />
                 <span>Carga optimizada en tiempo real</span>
               </div>
             </div>
           </div>
-          
-          <div class="flex flex-col sm:flex-row gap-3">
+
+          <div class='flex flex-col sm:flex-row gap-3'>
             <button
-              onclick="window.location.reload()"
-              class="group px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 hover:border-gray-400 rounded-xl transition-all duration-300 font-medium flex items-center gap-2 hover:scale-105"
+              onclick='window.location.reload()'
+              class='group px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 hover:border-gray-400 rounded-xl transition-all duration-300 font-medium flex items-center gap-2 hover:scale-105'
             >
-              <span class="text-lg group-hover:rotate-180 transition-transform duration-500">🔄</span>
+              <span class='text-lg group-hover:rotate-180 transition-transform duration-500'>
+                🔄
+              </span>
               <span>Actualizar</span>
             </button>
-            
             <a
-              href="/upload"
-              class="group px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all duration-300 font-medium shadow-lg hover:shadow-xl flex items-center gap-2 hover:scale-105"
+              href='/upload'
+              class='group px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all duration-300 font-medium shadow-lg hover:shadow-xl flex items-center gap-2 hover:scale-105'
             >
-              <span class="text-lg group-hover:scale-110 transition-transform duration-300">✨</span>
+              <span class='text-lg group-hover:scale-110 transition-transform duration-300'>
+                ✨
+              </span>
               <span>Agregar Imagen</span>
-            </a>
+            </a>{' '}
           </div>
-        </div><!-- Masonry Grid -->
-        <div class="masonry-container" id="masonry-container">
+        </div>
+        {/* Masonry Grid */}
+        <div class='masonry-container' id='masonry-container'>
           {images.map((image, index) => (
-            <div class="masonry-item" data-index={index}>
+            <div class='masonry-item' data-index={index}>
               <ImageCard
                 src={generateThumbnailUrl(image.public_id)}
                 alt={image.public_id}
@@ -187,15 +197,33 @@ try {
     animation: fadeInMasonry 0.8s ease-out forwards;
   }
 
-  .masonry-item:nth-child(1) { animation-delay: 0.1s; }
-  .masonry-item:nth-child(2) { animation-delay: 0.15s; }
-  .masonry-item:nth-child(3) { animation-delay: 0.2s; }
-  .masonry-item:nth-child(4) { animation-delay: 0.25s; }
-  .masonry-item:nth-child(5) { animation-delay: 0.3s; }
-  .masonry-item:nth-child(6) { animation-delay: 0.35s; }
-  .masonry-item:nth-child(7) { animation-delay: 0.4s; }
-  .masonry-item:nth-child(8) { animation-delay: 0.45s; }
-  .masonry-item:nth-child(n+9) { animation-delay: 0.5s; }
+  .masonry-item:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .masonry-item:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .masonry-item:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .masonry-item:nth-child(4) {
+    animation-delay: 0.25s;
+  }
+  .masonry-item:nth-child(5) {
+    animation-delay: 0.3s;
+  }
+  .masonry-item:nth-child(6) {
+    animation-delay: 0.35s;
+  }
+  .masonry-item:nth-child(7) {
+    animation-delay: 0.4s;
+  }
+  .masonry-item:nth-child(8) {
+    animation-delay: 0.45s;
+  }
+  .masonry-item:nth-child(n + 9) {
+    animation-delay: 0.5s;
+  }
 
   @keyframes fadeInMasonry {
     to {
@@ -235,8 +263,12 @@ try {
   }
 
   @keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 
   /* Estilos adicionales para mejorar la experiencia */
@@ -281,20 +313,20 @@ try {
 
 <script is:inline>
   // Sistema masonry con JavaScript puro (sin TypeScript)
-  document.addEventListener('DOMContentLoaded', function() {
-    var container = document.getElementById('masonry-container');
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('masonry-container');
     if (!container) return;
 
-    var images = container.querySelectorAll('img');
-    var loadedImages = 0;
-    var totalImages = images.length;
+    const images = container.querySelectorAll('img');
+    let loadedImages = 0;
+    const totalImages = images.length;
 
     // Función para reorganizar el masonry
     function reorganizeMasonry() {
       if (container) {
-        setTimeout(function() {
+        setTimeout(function () {
           container.style.opacity = '0.99';
-          requestAnimationFrame(function() {
+          requestAnimationFrame(function () {
             container.style.opacity = '1';
           });
         }, 200);
@@ -303,15 +335,15 @@ try {
 
     // Función para ajustar el grid span
     function adjustGridSpan(imgElement) {
-      var gridItem = imgElement.closest('.masonry-item');
+      const gridItem = imgElement.closest('.masonry-item');
       if (!gridItem) return;
 
       function calculateSpan() {
-        setTimeout(function() {
-          var cardHeight = gridItem.scrollHeight;
-          var rowHeight = 10;
-          var rowGap = 24;
-          var rowSpan = Math.ceil((cardHeight + rowGap) / (rowHeight + rowGap));
+        setTimeout(function () {
+          const cardHeight = gridItem.scrollHeight;
+          const rowHeight = 10;
+          const rowGap = 24;
+          const rowSpan = Math.ceil((cardHeight + rowGap) / (rowHeight + rowGap));
           gridItem.style.gridRowEnd = 'span ' + rowSpan;
         }, 100);
       }
@@ -324,23 +356,23 @@ try {
     }
 
     // Procesar cada imagen
-    for (var i = 0; i < images.length; i++) {
-      var img = images[i];
-      
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+
       if (img.complete && img.naturalHeight !== 0) {
         loadedImages++;
         adjustGridSpan(img);
       } else {
-        img.addEventListener('load', function() {
+        img.addEventListener('load', function () {
           loadedImages++;
           adjustGridSpan(this);
-          
+
           if (loadedImages === totalImages) {
             reorganizeMasonry();
           }
         });
 
-        img.addEventListener('error', function() {
+        img.addEventListener('error', function () {
           loadedImages++;
           if (loadedImages === totalImages) {
             reorganizeMasonry();
@@ -357,16 +389,16 @@ try {
 
   // Observador de intersección para animaciones
   if (typeof IntersectionObserver !== 'undefined') {
-    var observerOptions = {
+    const observerOptions = {
       threshold: 0.1,
-      rootMargin: '100px 0px'
+      rootMargin: '100px 0px',
     };
 
-    var observer = new IntersectionObserver(function(entries) {
-      for (var j = 0; j < entries.length; j++) {
-        var entry = entries[j];
+    const observer = new IntersectionObserver(function (entries) {
+      for (let j = 0; j < entries.length; j++) {
+        const entry = entries[j];
         if (entry.isIntersecting && entry.target) {
-          var element = entry.target;
+          const element = entry.target;
           element.style.animationPlayState = 'running';
           element.classList.add('in-view');
         }
@@ -374,11 +406,14 @@ try {
     }, observerOptions);
 
     // Observar elementos masonry
-    var masonryItems = document.querySelectorAll('.masonry-item');
-    for (var k = 0; k < masonryItems.length; k++) {
+    const masonryItems = document.querySelectorAll('.masonry-item');
+    for (let k = 0; k < masonryItems.length; k++) {
       observer.observe(masonryItems[k]);
     }
   }
 
-  console.log('Galería masonry inicializada correctamente');
+  // Solo mostrar logs en entorno de desarrollo
+  if (window.location.hostname === 'localhost') {
+    console.log('Galería masonry inicializada correctamente');
+  }
 </script>

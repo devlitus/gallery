@@ -4,40 +4,37 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Galería de imágenes con Cloudinary" } =
-  Astro.props;
+const { title, description = 'Galería de imágenes con Cloudinary' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang='es'>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <meta name='generator' content={Astro.generator} />
+    <meta name='description' content={description} />
     <title>{title}</title>
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <link rel='stylesheet' href='/src/styles/global.css' />
   </head>
-  <body class="min-h-screen bg-gray-50">
-    <header class="bg-white shadow-sm border-b border-gray-200">
-      <nav class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-bold text-gray-900">
-            <a href="/" class="hover:text-blue-600 transition-colors">
-              Galería
-            </a>
+  <body class='min-h-screen bg-gray-50'>
+    <header class='bg-white shadow-sm border-b border-gray-200'>
+      <nav class='container mx-auto px-4 py-4'>
+        <div class='flex items-center justify-between'>
+          <h1 class='text-2xl font-bold text-gray-900'>
+            <a href='/' class='hover:text-blue-600 transition-colors'> Galería </a>
           </h1>
-          <div class="flex space-x-4">
+          <div class='flex space-x-4'>
             <a
-              href="/gallery"
-              class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+              href='/gallery'
+              class='px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors'
             >
               Ver Galería
             </a>
             <a
-              href="/upload"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              href='/upload'
+              class='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
             >
               Subir Imagen
             </a>
@@ -45,7 +42,7 @@ const { title, description = "Galería de imágenes con Cloudinary" } =
         </div>
       </nav>
     </header>
-    <main class="container mx-auto px-4 py-8">
+    <main class='container mx-auto px-4 py-8'>
       <slot />
     </main>
   </body>

@@ -1,16 +1,24 @@
 # Galería de Imágenes con Cloudinary
 
-Una aplicación moderna de galería de imágenes construida con Astro, TypeScript y Tailwind CSS, integrada con Cloudinary para almacenamiento y optimización de imágenes.
+Una aplicación moderna de galería de imágenes construida con Astro, TypeScript y
+Tailwind CSS, integrada con Cloudinary para almacenamiento y optimización de
+imágenes.
 
 ## ✨ Características
 
-- 🖼️ **Galería de Imágenes**: Visualiza imágenes desde la carpeta "imageSD" de Cloudinary
+- 🖼️ **Galería de Imágenes**: Visualiza imágenes desde la carpeta "imageSD" de
+  Cloudinary
 - 📤 **Subida de Imágenes**: Interfaz drag-and-drop para subir nuevas imágenes
 - 🎨 **Diseño Responsivo**: Diseño moderno y responsivo con Tailwind CSS
-- ⚡ **Optimización Automática**: Cloudinary optimiza automáticamente las imágenes
+- ⚡ **Optimización Automática**: Cloudinary optimiza automáticamente las
+  imágenes
 - 🔍 **Vista Previa**: Previsualización de imágenes antes de subirlas
 - 🛡️ **Validación**: Validación de tipos y tamaños de archivo
 - 📱 **Mobile-First**: Optimizado para dispositivos móviles
+- 🚀 **CI/CD**: Pipeline automático con GitHub Actions
+- 🧪 **Testing**: Tests automatizados con Vitest
+- 🔒 **Seguridad**: Análisis de código y dependencias
+- 📊 **Calidad**: Linting, formateo y checks de TypeScript
 
 ## 🚀 Configuración
 
@@ -22,7 +30,8 @@ Una aplicación moderna de galería de imágenes construida con Astro, TypeScrip
 
 ### Variables de Entorno
 
-Crea un archivo `.env` en la raíz del proyecto con tus credenciales de Cloudinary:
+Crea un archivo `.env` en la raíz del proyecto con tus credenciales de
+Cloudinary:
 
 ```env
 CLOUDINARY_CLOUDNAME=tu_cloud_name
@@ -45,6 +54,51 @@ npm run build
 
 # Vista previa de la construcción
 npm run preview
+
+# Ejecutar tests
+npm run test
+
+# Linting y formateo
+npm run lint
+npm run format
+
+# Verificación de tipos
+npm run type-check
+```
+
+## 🚀 CI/CD
+
+Este proyecto incluye un pipeline completo de CI/CD con GitHub Actions que
+incluye:
+
+- ✅ **Tests automáticos** con Vitest
+- 🔍 **Linting** con ESLint y Prettier
+- 🔒 **Análisis de seguridad** con CodeQL
+- 📦 **Revisión de dependencias** automática
+- 🌐 **Deploy automático** a Netlify
+- 📊 **Análisis de rendimiento** con Lighthouse CI
+
+### Estado del Pipeline
+
+![CI/CD Status](https://github.com/devlitus/gallery/workflows/🚀%20CI/CD%20Pipeline/badge.svg)
+![Security Analysis](https://github.com/devlitus/gallery/workflows/🔍%20CodeQL%20Security%20Analysis/badge.svg)
+
+Para más detalles sobre la configuración de CI/CD, consulta
+[CICD_SETUP.md](./CICD_SETUP.md).
+
+### Comandos de Desarrollo
+
+```bash
+# Verificar calidad del código
+npm run lint:check
+npm run format:check
+npm run type-check
+
+# Ejecutar tests con cobertura
+npm run test:coverage
+
+# Ejecutar tests en modo watch
+npm run test:watch
 ```
 
 ## 📁 Estructura del Proyecto
@@ -74,6 +128,10 @@ src/
 - **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
 - **[Tailwind CSS](https://tailwindcss.com)** - Framework de CSS utilitario
 - **[Cloudinary](https://cloudinary.com)** - Gestión y optimización de imágenes
+- **[Vitest](https://vitest.dev)** - Framework de testing
+- **[ESLint](https://eslint.org)** - Linter para JavaScript/TypeScript
+- **[Prettier](https://prettier.io)** - Formateador de código
+- **[GitHub Actions](https://github.com/features/actions)** - CI/CD
 
 ## 📖 Uso
 
@@ -119,7 +177,8 @@ Ve a `/upload` para:
 
 ## 🚢 Despliegue
 
-Para desplegar en producción, necesitarás configurar un adaptador de Astro apropiado para tu plataforma:
+Para desplegar en producción, necesitarás configurar un adaptador de Astro
+apropiado para tu plataforma:
 
 ```bash
 # Ejemplo para Vercel
@@ -143,12 +202,14 @@ Las contribuciones son bienvenidas. Por favor:
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más
+detalles.
 
 ## 🛟 Soporte
 
 Si tienes problemas o preguntas:
 
 1. Revisa la [documentación de Astro](https://docs.astro.build)
-2. Consulta la [documentación de Cloudinary](https://cloudinary.com/documentation)
+2. Consulta la
+   [documentación de Cloudinary](https://cloudinary.com/documentation)
 3. Abre un issue en este repositorio

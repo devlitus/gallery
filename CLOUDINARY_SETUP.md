@@ -1,6 +1,7 @@
 # Configuración de Cloudinary para la Galería de Imágenes
 
-Este documento te guiará paso a paso para configurar Cloudinary con tu aplicación de galería.
+Este documento te guiará paso a paso para configurar Cloudinary con tu
+aplicación de galería.
 
 ## 📋 Requisitos Previos
 
@@ -46,7 +47,8 @@ CLOUDINARY_URL=cloudinary://123456789012345:abcdef123456789-abcdef123456789@miem
 
 ### 4. Configurar la Carpeta imageSD
 
-Para que la aplicación funcione correctamente, necesitas crear la carpeta "imageSD":
+Para que la aplicación funcione correctamente, necesitas crear la carpeta
+"imageSD":
 
 #### Opción A: Crear la carpeta manualmente
 
@@ -57,7 +59,8 @@ Para que la aplicación funcione correctamente, necesitas crear la carpeta "imag
 
 #### Opción B: La carpeta se creará automáticamente
 
-- La primera vez que subas una imagen a través de la aplicación, la carpeta se creará automáticamente
+- La primera vez que subas una imagen a través de la aplicación, la carpeta se
+  creará automáticamente
 
 ### 5. Verificar la Configuración
 
@@ -130,7 +133,8 @@ https://res.cloudinary.com/tu-cloud-name/image/upload/v1234567890/imageSD/mi-ima
 
 Si tienes problemas:
 
-1. **Documentación oficial**: [cloudinary.com/documentation](https://cloudinary.com/documentation)
+1. **Documentación oficial**:
+   [cloudinary.com/documentation](https://cloudinary.com/documentation)
 2. **Support de Cloudinary**: Desde tu dashboard
 3. **Logs de la aplicación**: Revisa la consola del navegador y terminal
 
@@ -144,4 +148,5 @@ Si tienes problemas:
 - [ ] Página de galería carga correctamente
 - [ ] Funcionalidad de subida de imágenes probada
 
-Una vez completados todos estos pasos, tu aplicación de galería estará completamente funcional con Cloudinary!
+Una vez completados todos estos pasos, tu aplicación de galería estará
+completamente funcional con Cloudinary!
