@@ -1,13 +1,14 @@
-name: 🚀 CI/CD Pipeline
+name: 🧪 Tests & Quality Checks
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
 env:
   NODE_VERSION: '18'
-  PNPM_VERSION: '8'
 
 jobs:
   # 🧪 Testing y Linting
@@ -32,48 +33,16 @@ jobs:
         run: npm run lint --if-present
 
       - name: 🧪 Run tests
-        run: npm run test --if-present
+        run: npm run test:ci --if-present
 
       - name: 📊 Type check
         run: npm run type-check --if-present
 
-  # 🏗️ Build del proyecto
-  build:
-    name: 🏗️ Build Project
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: 📥 Install dependencies
-        run: npm ci
-
-      - name: 🏗️ Build project
-        run: npm run build
-        env:
-          CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
-          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
-          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
-
-      - name: 📦 Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-          retention-days: 30
-
-  # 🔒 Security scan
+  # 🔒 Security scan (solo en merges a main)
   security:
     name: 🔒 Security Scan
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: 📥 Checkout code
@@ -92,59 +61,4 @@ jobs:
         run: npm audit --audit-level=high
         continue-on-error: true
 
-      - name: 🔍 Dependency vulnerability scan
-        uses: snyk/actions/node@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-  # 📱 Preview deployment - ELIMINADO
-  # Se ejecuta solo en merge, no en PRs
-  
-  # 🚀 Production deployment (solo para merges a main)
-  production-deploy:
-    name: 🚀 Production Deploy
-    runs-on: ubuntu-latest
-    needs: [test, build, security]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: production
-      url: https://gallery-devlitus.netlify.app
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: 📥 Install dependencies
-        run: npm ci
-
-      - name: 🏗️ Build for production
-        run: npm run build
-        env:
-          CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
-          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
-          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
-
-      - name: 🚀 Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: './dist'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Production deploy v${{ github.sha }}'
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-      - name: 📊 Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
-        with:
-          configPath: './.lighthouserc.json'
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+# ✅ DEPLOY ELIMINADO - Netlify se encarga automáticamente

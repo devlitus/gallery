@@ -83,8 +83,8 @@ incluye:
 ![CI/CD Status](https://github.com/devlitus/gallery/workflows/🚀%20CI/CD%20Pipeline/badge.svg)
 ![Security Analysis](https://github.com/devlitus/gallery/workflows/🔍%20CodeQL%20Security%20Analysis/badge.svg)
 
-Para más detalles sobre la configuración de CI/CD, consulta
-[CICD_SETUP.md](./CICD_SETUP.md).
+Para más detalles sobre la configuración de CI/CD, consulta la
+[📚 documentación completa](./documentation/README.md).
 
 ### Comandos de Desarrollo
 
@@ -200,6 +200,29 @@ Las contribuciones son bienvenidas. Por favor:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
+## 📚 Documentación
+
+Este proyecto incluye documentación completa y detallada en la carpeta
+`documentation/`:
+
+### 🎯 **Documentos Principales**
+
+- **[📖 Estado del Proyecto](./documentation/PROJECT_COMPLETED.md)** - Estado
+  actual y resumen completo
+- **[🚀 Guía de Setup](./documentation/SETUP_FINAL_SIMPLE.md)** - Configuración
+  paso a paso
+- **[⚙️ CI/CD Workflows](./documentation/WORKFLOWS_FINAL.md)** - Configuración
+  de GitHub Actions
+- **[🔗 Deploy Netlify](./documentation/NETLIFY_DEPLOY_FINAL.md)** - Setup de
+  deploy automático
+- **[📸 Cloudinary Setup](./documentation/CLOUDINARY_SETUP.md)** - Configuración
+  de imágenes
+
+### 📋 **Índice Completo**
+
+Ver **[📚 Índice de Documentación](./documentation/README.md)** para una guía
+completa de todos los documentos disponibles.
+
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más
@@ -209,7 +232,7 @@ detalles.
 
 Si tienes problemas o preguntas:
 
-1. Revisa la [documentación de Astro](https://docs.astro.build)
-2. Consulta la
-   [documentación de Cloudinary](https://cloudinary.com/documentation)
-3. Abre un issue en este repositorio
+1. Revisa la **[📚 documentación del proyecto](./documentation/README.md)**
+2. Consulta la [documentación de Astro](https://docs.astro.build)
+3. Revisa la [documentación de Cloudinary](https://cloudinary.com/documentation)
+4. Abre un issue en este repositorio
