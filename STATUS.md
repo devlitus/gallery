@@ -2,7 +2,8 @@
 
 ## ✅ COMPLETADO EXITOSAMENTE
 
-La aplicación de galería de imágenes está **funcionando completamente** y lista para usar.
+La aplicación de galería de imágenes está **funcionando completamente** y lista
+para usar.
 
 ### 🎯 Funcionalidades Implementadas
 
@@ -38,7 +39,8 @@ La aplicación de galería de imágenes está **funcionando completamente** y li
 
 **PROBLEMA INICIAL:** Las imágenes no se mostraban en la galería
 
-**CAUSA:** Las variables de entorno del archivo `.env` no se estaban cargando en el modo servidor de Astro
+**CAUSA:** Las variables de entorno del archivo `.env` no se estaban cargando en
+el modo servidor de Astro
 
 **SOLUCIÓN IMPLEMENTADA:**
 
@@ -77,10 +79,10 @@ La aplicación está **completamente funcional** y lista para:
 - **Inicio:** http://localhost:4321/
 - **Galería:** http://localhost:4321/gallery
 - **Upload:** http://localhost:4321/upload
-- **Debug:** http://localhost:4321/debug _(temporal)_
 
 ---
 
 **🎉 PROYECTO COMPLETADO CON ÉXITO**
 
-La galería de imágenes con Cloudinary está funcionando perfectamente con todas las características solicitadas implementadas.
+La galería de imágenes con Cloudinary está funcionando perfectamente con todas
+las características solicitadas implementadas.

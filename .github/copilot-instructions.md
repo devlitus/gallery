@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-This is an Astro project using TypeScript for type safety and Tailwind CSS for styling. Astro focuses on content-first websites with minimal client-side JavaScript and optimal performance through islands architecture.
+This is an Astro project using TypeScript for type safety and Tailwind CSS for
+styling. Astro focuses on content-first websites with minimal client-side
+JavaScript and optimal performance through islands architecture.
 
 ## Code Style & Formatting
 
@@ -202,10 +204,10 @@ import heroImage from '../assets/hero.jpg';
 
 ```typescript
 // src/content/config.ts
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z } from 'astro:content';
 
 const blogCollection = defineCollection({
-  type: "content",
+  type: 'content',
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -329,17 +331,17 @@ const fullTitle = `${title} | Site Name`;
 
 ```typescript
 // Use Astro's testing utilities
-import { experimental_AstroContainer as AstroContainer } from "astro/container";
-import { expect, test } from "vitest";
-import Card from "../components/Card.astro";
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { expect, test } from 'vitest';
+import Card from '../components/Card.astro';
 
-test("Card component renders correctly", async () => {
+test('Card component renders correctly', async () => {
   const container = await AstroContainer.create();
   const result = await container.renderToString(Card, {
-    props: { title: "Test Title" },
+    props: { title: 'Test Title' },
   });
 
-  expect(result).toContain("Test Title");
+  expect(result).toContain('Test Title');
 });
 ```
 
@@ -350,7 +352,7 @@ test("Card component renders correctly", async () => {
 ```typescript
 // astro.config.mjs
 export default defineConfig({
-  output: "static",
+  output: 'static',
   vite: {
     plugins: [tailwindcss()],
   },
@@ -372,6 +374,46 @@ export default defineConfig({
 5. **State Management**: Prefer server-side state, minimize client state
 6. **Code Splitting**: Use dynamic imports for large components
 7. **Asset Optimization**: Leverage Astro's built-in asset pipeline
+8. **Content Collections**: Use Astro's content collections for structured data
+9. **SEO Best Practices**: Always include meta tags and structured data
+10. **Accessibility**: Follow WCAG standards, use semantic HTML
+11. **Testing**: Write unit tests for components and utilities
+12. **Documentation**: Keep code well-documented, use JSDoc for complex
+    functions
+13. **Performance**: Use Astro's built-in performance optimizations
+14. **Version Control**: Use Git for version control, follow branching
+    strategies
+15. **Code Reviews**: Conduct code reviews to maintain quality
+16. **Continuous Integration**: Set up CI/CD pipelines for automated testing and
+    deployment
+17. **Error Logging**: Implement error logging for production environments
+18. **Security**: Sanitize user inputs, avoid XSS vulnerabilities
+19. **Internationalization**: Use Astro's i18n features for multi-language
+    support
+20. **Pull Requests**: Use pull requests for code changes, ensure they are
+    reviewed before merging
+21. **Create Reusable Components**: Break down UI into small, reusable
+    components
+22. **Use Astro Islands**: Leverage Astro's islands architecture for optimal
+    performance
+23. **Create breanch for each feature**: Use feature branches for development to
+    keep the main branch stable
+24. **Use Astro's built-in utilities**: Utilize Astro's built-in utilities for
+    common tasks like fetching data, rendering components, and managing state
+25. **Use Tailwind's JIT mode**: Enable Just-In-Time mode for Tailwind to
+    optimize CSS generation
+26. **Use Astro's built-in image optimization**: Use Astro's image component for
+    automatic image optimization
+27. **Use Astro's built-in routing**: Leverage Astro's routing system for clean
+    and maintainable URLs
+28. **Use Astro's built-in markdown support**: Use Astro's markdown support for
+    content management
+29. **Use Astro's built-in error handling**: Implement error boundaries and
+    proper error handling in your components
+30. **Use Astro's built-in error handling**: Implement error boundaries and
+    proper error handling in your components
+31. **Use Astro's built-in testing utilities**: Write tests using Astro's
+    testing utilities to ensure component functionality
 
 ## Anti-Patterns to Avoid
 
@@ -411,3 +453,13 @@ export default defineConfig({
 - https://docs.astro.build/en/concepts/islands/
 - https://docs.astro.build/en/guides/framework-components/
 - https://docs.astro.build/en/guides/on-demand-rendering/
+- https://vitest.dev/guide/
+- https://vitest.dev/api/mock.html
+- https://vitest.dev/guide/environment.html
+- https://vitest.dev/api/vi.html
+- https://vitest.dev/api/expect.html
+- https://vitest.dev/api/expect-typeof.html
+- https://vitest.dev/api/assert.html
+- https://vitest.dev/api/assert-type.html
+- https://vitest.dev/guide/cli.html
+- https://vitest.dev/guide/test-context.html

@@ -1,0 +1,195 @@
+name: 🏷️ Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Is this a pre-release?'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # 🏗️ Build y Test para Release
+  build-and-test:
+    name: 🏗️ Build & Test for Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests
+        run: npm run test --if-present
+
+      - name: 🏗️ Build project
+        run: npm run build
+        env:
+          CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
+          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+
+      - name: 📦 Create build archive
+        run: |
+          cd dist
+          tar -czf ../gallery-build-${{ github.ref_name }}.tar.gz .
+          cd ..
+
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-archive
+          path: gallery-build-*.tar.gz
+
+  # 🏷️ Create Release
+  create-release:
+    name: 🏷️ Create Release
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-archive
+
+      - name: 📝 Generate changelog
+        id: changelog
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${{ github.ref_name }}"
+          fi
+
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+          # Generar changelog desde el último tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+
+          if [ -n "$LAST_TAG" ]; then
+            CHANGELOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges -10)
+          fi
+
+          cat > CHANGELOG.md << EOF
+          ## 🚀 What's Changed in ${VERSION}
+
+          ${CHANGELOG}
+
+          ## 📊 Project Stats
+          - **Build Date**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          - **Commit**: ${GITHUB_SHA}
+          - **Branch**: ${GITHUB_REF_NAME}
+
+          ## 🛠️ Installation
+
+          \`\`\`bash
+          git clone https://github.com/devlitus/gallery.git
+          cd gallery
+          npm install
+          npm run build
+          \`\`\`
+
+          ## 🔗 Links
+          - [📖 Documentation](https://github.com/devlitus/gallery#readme)
+          - [🐛 Report Issues](https://github.com/devlitus/gallery/issues)
+          - [💡 Request Features](https://github.com/devlitus/gallery/issues/new)
+          EOF
+
+      - name: 🏷️ Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.version }}
+          release_name: 🎉 Gallery v${{ steps.changelog.outputs.version }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease || false }}
+
+      - name: 📤 Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./gallery-build-${{ steps.changelog.outputs.version }}.tar.gz
+          asset_name: gallery-build-${{ steps.changelog.outputs.version }}.tar.gz
+          asset_content_type: application/gzip
+
+  # 🚀 Deploy Release to Production
+  deploy-release:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: create-release
+    environment:
+      name: production
+      url: https://gallery-devlitus.netlify.app
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build for production
+        run: npm run build
+        env:
+          CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
+          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+
+      - name: 🚀 Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: '🚀 Production Release ${{ github.ref_name }}'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: 📊 Post-deployment health check
+        run: |
+          echo "🔄 Waiting for deployment to be ready..."
+          sleep 30
+
+          # Health check básico
+          curl -f https://gallery-devlitus.netlify.app || exit 1
+          echo "✅ Deployment health check passed!"
