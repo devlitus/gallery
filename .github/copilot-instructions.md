@@ -115,19 +115,44 @@ import VueComponent from '../components/VueComponent.vue';
 
 - Use Tailwind utilities instead of custom CSS
 - Create component classes only for repeated patterns
-- Use `@apply` sparingly in CSS files
+- Use arbitrary values `[value]` for one-off customizations
+- Use arbitrary properties `[property:value]` when utilities don't exist
 - Leverage Tailwind's design system (spacing, colors, typography)
+- Prefer composition over `@apply` - use `@apply` only for component extraction
+
+### Modern CSS Features
+
+```html
+<!-- Container queries (Tailwind v4+) -->
+<div class="@container">
+  <div class="@sm:grid-cols-2 @lg:grid-cols-3 grid gap-4">
+    <!-- Responsive based on container size -->
+  </div>
+</div>
+
+<!-- CSS functions and arbitrary values -->
+<div class="w-[calc(100%-2rem)] bg-[color:oklch(0.5_0.2_180)]">
+  <!-- Modern color functions and calculations -->
+</div>
+```
 
 ### Responsive Design
 
 ```html
-<!-- Mobile-first responsive classes -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Mobile-first responsive classes with modern breakpoints -->
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+>
   <article
-    class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+    class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out"
   >
-    <!-- Card content -->
+    <!-- Enhanced transitions and modern spacing -->
   </article>
+</div>
+
+<!-- Dark mode with system preference -->
+<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+  <!-- Automatic dark mode support -->
 </div>
 ```
 
@@ -136,31 +161,69 @@ import VueComponent from '../components/VueComponent.vue';
 ```typescript
 ---
 interface CardProps {
-  variant?: 'default' | 'highlighted';
+  variant?: 'default' | 'highlighted' | 'error';
   size?: 'sm' | 'md' | 'lg';
+  className?: string;
 }
 
-const { variant = 'default', size = 'md' } = Astro.props;
+const { variant = 'default', size = 'md', className = '' } = Astro.props;
 
-const cardClasses = {
-  base: 'rounded-lg shadow-md transition-shadow hover:shadow-lg',
-  variants: {
-    default: 'bg-white border border-gray-200',
-    highlighted: 'bg-blue-50 border border-blue-200'
-  },
-  sizes: {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8'
-  }
+// Modern approach with CSS custom properties and utility composition
+const baseClasses = 'rounded-lg shadow-md transition-all duration-200 hover:shadow-lg';
+
+const variantClasses = {
+  default: 'bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700',
+  highlighted: 'bg-blue-50 border border-blue-200 dark:bg-blue-900/20 dark:border-blue-700',
+  error: 'bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-700'
 };
 
-const classes = `${cardClasses.base} ${cardClasses.variants[variant]} ${cardClasses.sizes[size]}`;
+const sizeClasses = {
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8'
+};
+
+// Use template literals for better readability and maintenance
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  className
+].filter(Boolean).join(' ');
 ---
 
 <div class={classes}>
   <slot />
 </div>
+```
+
+### Advanced Patterns
+
+```typescript
+---
+// Data attributes for styling state
+const isActive = true;
+const hasError = false;
+---
+
+<!-- State-based styling with data attributes -->
+<button
+  class="btn-primary data-[active]:bg-blue-600 data-[error]:border-red-500"
+  data-active={isActive}
+  data-error={hasError}
+>
+  Interactive Button
+</button>
+
+<!-- Modern focus management -->
+<input
+  class="border rounded-md px-3 py-2
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+         disabled:opacity-50 disabled:cursor-not-allowed
+         invalid:border-red-500 invalid:ring-red-500"
+  type="email"
+  required
+/>
 ```
 
 ## Performance Optimization
@@ -186,10 +249,35 @@ import heroImage from '../assets/hero.jpg';
 
 ### CSS Optimization
 
-- Use Tailwind's purge configuration
-- Minimize custom CSS
-- Leverage Tailwind's built-in optimizations
-- Use CSS custom properties for theme values
+- Leverage Tailwind's automatic optimization and tree-shaking
+- Use CSS custom properties with `@theme` directive for consistent theming
+- Minimize custom CSS - prefer arbitrary values over custom CSS
+- Use Tailwind's built-in performance optimizations
+- Enable CSS splitting for better caching
+- Use PostCSS plugins for additional optimizations
+
+```css
+/* Modern theme configuration with @theme directive */
+@theme {
+  --color-primary: oklch(0.5 0.2 180);
+  --color-secondary: oklch(0.7 0.15 220);
+  --font-heading: 'Inter Variable', system-ui, sans-serif;
+  --size-content: 65ch;
+}
+
+/* Custom utilities when needed */
+@utility screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
 
 ### JavaScript Optimization
 
@@ -400,19 +488,15 @@ export default defineConfig({
     keep the main branch stable
 24. **Use Astro's built-in utilities**: Utilize Astro's built-in utilities for
     common tasks like fetching data, rendering components, and managing state
-25. **Use Tailwind's JIT mode**: Enable Just-In-Time mode for Tailwind to
-    optimize CSS generation
-26. **Use Astro's built-in image optimization**: Use Astro's image component for
+25. **Use Astro's built-in image optimization**: Use Astro's image component for
     automatic image optimization
-27. **Use Astro's built-in routing**: Leverage Astro's routing system for clean
+26. **Use Astro's built-in routing**: Leverage Astro's routing system for clean
     and maintainable URLs
-28. **Use Astro's built-in markdown support**: Use Astro's markdown support for
+27. **Use Astro's built-in markdown support**: Use Astro's markdown support for
     content management
-29. **Use Astro's built-in error handling**: Implement error boundaries and
+28. **Use Astro's built-in error handling**: Implement error boundaries and
     proper error handling in your components
-30. **Use Astro's built-in error handling**: Implement error boundaries and
-    proper error handling in your components
-31. **Use Astro's built-in testing utilities**: Write tests using Astro's
+29. **Use Astro's built-in testing utilities**: Write tests using Astro's
     testing utilities to ensure component functionality
 
 ## Anti-Patterns to Avoid
@@ -440,6 +524,7 @@ export default defineConfig({
 - Use clean code standards.
 - Avoid using `console.log` in production code, use proper logging.
 - Don't use `window` or `document` directly in server-side code
+- Don't use `window` or `document` directly in server-side code
 
 ## Documentation
 
@@ -464,3 +549,16 @@ export default defineConfig({
 - https://vitest.dev/guide/cli.html
 - https://vitest.dev/guide/test-context.html
 - https://docs.astro.build/en/guides/integrations-guide/netlify/
+- https://tailwindcss.com/docs/adding-custom-styles
+- https://tailwindcss.com/docs/installation/framework-guides/astro
+- https://tailwindcss.com/docs/styling-with-utility-classes
+- https://tailwindcss.com/docs/hover-focus-and-other-states
+- https://tailwindcss.com/docs/responsive-design
+- https://tailwindcss.com/docs/dark-mode
+- https://tailwindcss.com/docs/theme
+- https://tailwindcss.com/docs/colors
+- https://tailwindcss.com/docs/container-queries
+- https://tailwindcss.com/docs/arbitrary-values
+- https://tailwindcss.com/docs/arbitrary-properties
+- https://tailwindcss.com/docs/customizing-colors
+- https://tailwindcss.com/docs/configuration
