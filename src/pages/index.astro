@@ -14,39 +14,37 @@ const pageData: PageData = {
 
 <Layout title={pageData.title} description={pageData.description}>
   <div class='text-center'>
-    <h1 class='text-4xl font-bold text-gray-900 mb-6'>Bienvenido a la Galería</h1>
-    <p class='text-xl text-gray-600 mb-8 max-w-2xl mx-auto'>
-      Explora nuestra colección de imágenes almacenadas en Cloudinary o sube tus propias imágenes.
-    </p>
+    <div class='bg-gradient-hero text-white rounded-2xl p-12 mb-12'>
+      <h1 class='heading-1 text-white mb-6'>Bienvenido a la Galería</h1>
+      <p class='body-large text-neutral-100 max-w-2xl mx-auto'>
+        Explora nuestra colección de imágenes almacenadas en Cloudinary o sube tus propias imágenes 
+        usando nuestra interfaz moderna y elegante.
+      </p>
+    </div>
 
-    <div class='grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto'>
-      <div class='bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow'>
-        <div class='text-blue-600 text-5xl mb-4'>🖼️</div>
-        <h2 class='text-2xl font-semibold text-gray-900 mb-4'>Ver Galería</h2>
-        <p class='text-gray-600 mb-6'>
-          Explora todas las imágenes de la carpeta imageSD en Cloudinary
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
+      <div class='card p-8 hover-lift'>
+        <div class='text-primary-500 text-6xl mb-6'>🖼️</div>
+        <h2 class='heading-3 mb-4'>Ver Galería</h2>
+        <p class='body-normal mb-6'>
+          Explora todas las imágenes de la carpeta imageSD en Cloudinary con una experiencia 
+          visual mejorada y navegación intuitiva.
         </p>
-        <a
-          href='/gallery'
-          class='inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium'
-        >
+        <a href='/gallery' class='btn-primary inline-block'>
           Ir a la Galería
         </a>
       </div>
 
-      <div class='bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow'>
-        <div class='text-green-600 text-5xl mb-4'>📤</div>
-        <h2 class='text-2xl font-semibold text-gray-900 mb-4'>Subir Imagen</h2>
-        <p class='text-gray-600 mb-6'>
-          Agrega nuevas imágenes a la galería de forma fácil y rápida
+      <div class='card p-8 hover-lift'>
+        <div class='text-accent-600 text-6xl mb-6'>📤</div>
+        <h2 class='heading-3 mb-4'>Subir Imagen</h2>
+        <p class='body-normal mb-6'>
+          Agrega nuevas imágenes a la galería de forma fácil y rápida con nuestro 
+          sistema optimizado de carga.
         </p>
-        <a
-          href='/upload'
-          class='inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium'
-        >
+        <a href='/upload' class='btn-secondary inline-block'>
           Subir Imagen
         </a>
-      </div>
-    </div>
+      </div>    </div>
   </div>
 </Layout>

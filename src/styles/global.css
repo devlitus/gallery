@@ -1,1 +1,78 @@
 @import 'tailwindcss';
+@import './components.css';
+
+/* Tema personalizado con paleta de colores */
+@theme {
+  /* Colores principales */
+  --color-slate-950: #333446;
+  --color-slate-500: #7f8caa;
+  --color-teal-200: #b8cfce;
+  --color-gray-50: #eaefef;
+
+  /* Colores de marca personalizados */
+  --color-primary-dark: #333446;
+  --color-primary: #7f8caa;
+  --color-accent: #b8cfce;
+  --color-light: #eaefef;
+
+  /* Sistema de colores extendido basado en la paleta */
+  --color-primary-50: #f8f9fb;
+  --color-primary-100: #f0f2f6;
+  --color-primary-200: #dde2ec;
+  --color-primary-300: #bdc6db;
+  --color-primary-400: #98a6c8;
+  --color-primary-500: #7f8caa;
+  --color-primary-600: #6b7a9e;
+  --color-primary-700: #5a6990;
+  --color-primary-800: #4d5a7a;
+  --color-primary-900: #404b66;
+  --color-primary-950: #333446;
+
+  /* Colores de acento */
+  --color-accent-50: #f0f9f9;
+  --color-accent-100: #d9f0ef;
+  --color-accent-200: #b8cfce;
+  --color-accent-300: #8fb5b3;
+  --color-accent-400: #649895;
+  --color-accent-500: #4a7f7c;
+  --color-accent-600: #3a6663;
+  --color-accent-700: #325552;
+  --color-accent-800: #2d4744;
+  --color-accent-900: #293d3a;
+
+  /* Colores neutros */
+  --color-neutral-50: #eaefef;
+  --color-neutral-100: #d6dede;
+  --color-neutral-200: #b8c5c5;
+  --color-neutral-300: #94a4a4;
+  --color-neutral-400: #708080;
+  --color-neutral-500: #596969;
+  --color-neutral-600: #4a5757;
+  --color-neutral-700: #3e4848;
+  --color-neutral-800: #353d3d;
+  --color-neutral-900: #333446;
+
+  /* Tipografía */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'Fira Code', Consolas, monospace;
+
+  /* Espaciado personalizado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Bordes redondeados */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(51, 52, 70, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(51, 52, 70, 0.1), 0 2px 4px -1px rgba(51, 52, 70, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(51, 52, 70, 0.1), 0 4px 6px -2px rgba(51, 52, 70, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(51, 52, 70, 0.1), 0 10px 10px -5px rgba(51, 52, 70, 0.04);
+}
