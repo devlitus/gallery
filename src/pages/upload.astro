@@ -59,144 +59,172 @@ const pageData: PageData = {
 </Layout>
 
 <script>
-  let selectedFile: File | null = null;
+  // Initialize upload functionality when DOM is loaded
+  function initializeUpload() {
+    let selectedFile: File | null = null;
 
-  function handleFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    function handleFileChange(event: Event) {
+      const input = event.target as HTMLInputElement;
+      const file = input.files?.[0];
 
-    if (!file) return;
+      if (!file) return;
 
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      showError('Tipo de archivo no válido. Solo se permiten imágenes JPG, PNG, GIF y WEBP.');
-      return;
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        showError('Tipo de archivo no válido. Solo se permiten imágenes JPG, PNG, GIF y WEBP.');
+        return;
+      }
+
+      // Validate file size (10MB max)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        showError('El archivo es demasiado grande. El tamaño máximo es 10MB.');
+        return;
+      }
+
+      selectedFile = file;
+      showPreview(file);
     }
 
-    // Validate file size (10MB max)
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      showError('El archivo es demasiado grande. El tamaño máximo es 10MB.');
-      return;
+    function showPreview(file: File) {
+      const previewContainer = document.getElementById('preview-container');
+      const previewImage = document.getElementById('preview-image') as HTMLImageElement;
+      const fileInfo = document.getElementById('file-info');
+      const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+      if (!previewContainer || !fileInfo) {
+        console.warn('Preview elements not found');
+        return;
+      }
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImage.src = e.target?.result as string;
+        previewContainer.classList.remove('hidden');
+        submitButton.disabled = false;
+      };
+      reader.readAsDataURL(file);
+
+      // Show file info
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+      fileInfo.textContent = `${file.name} (${sizeInMB} MB)`;
     }
 
-    selectedFile = file;
-    showPreview(file);
-  }
-  function showPreview(file: File) {
-    const previewContainer = document.getElementById('preview-container');
-    const previewImage = document.getElementById('preview-image') as HTMLImageElement;
-    const fileInfo = document.getElementById('file-info');
-    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
-
-    if (!previewContainer || !fileInfo) return;
-
-    // Show preview
-    const reader = new FileReader();
-    reader.onload = e => {
-      previewImage.src = e.target?.result as string;
-      previewContainer.classList.remove('hidden');
-      submitButton.disabled = false;
-    };
-    reader.readAsDataURL(file);
-
-    // Show file info
-    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-    fileInfo.textContent = `${file.name} (${sizeInMB} MB)`;
-  }
-  function showError(message: string) {
-    const resultContainer = document.getElementById('result-container');
-    if (!resultContainer) return;
-    
-    resultContainer.innerHTML = `
-      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-        <div class="flex">
-          <div class="text-red-500 text-xl mr-3">❌</div>
-          <div>
-            <h3 class="text-red-800 font-medium">Error</h3>
-            <p class="text-red-700 text-sm mt-1">${message}</p>
-          </div>
-        </div>
-      </div>
-    `;
-    resultContainer.classList.remove('hidden');
-  }
-  function showSuccess(_imageUrl: string) {
-    const resultContainer = document.getElementById('result-container');
-    if (!resultContainer) return;
-    
-    resultContainer.innerHTML = `
-      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-        <div class="flex">
-          <div class="text-green-500 text-xl mr-3">✅</div>
-          <div class="flex-1">
-            <h3 class="text-green-800 font-medium">¡Imagen subida con éxito!</h3>
-            <p class="text-green-700 text-sm mt-1">La imagen se ha guardado en Cloudinary.</p>
-            <div class="mt-3 flex space-x-3">
-              <a href="/gallery" class="text-green-600 hover:text-green-700 font-medium">Ver en galería</a>
-              <button onclick="location.reload()" class="text-green-600 hover:text-green-700 font-medium">Subir otra</button>
+    function showError(message: string) {
+      const resultContainer = document.getElementById('result-container');
+      if (!resultContainer) {
+        console.warn('Result container not found');
+        return;
+      }
+      
+      resultContainer.innerHTML = `
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div class="flex">
+            <div class="text-red-500 text-xl mr-3">❌</div>
+            <div>
+              <h3 class="text-red-800 font-medium">Error</h3>
+              <p class="text-red-700 text-sm mt-1">${message}</p>
             </div>
           </div>
         </div>
-      </div>
-    `;
-    resultContainer.classList.remove('hidden');
-  }
-  // Handle form submission
-  const uploadForm = document.getElementById('upload-form');
-  if (!uploadForm) return;
-  
-  uploadForm.addEventListener('submit', async e => {
-    e.preventDefault();
-
-    if (!selectedFile) return;
-
-    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
-    const uploadText = document.getElementById('upload-text');
-    const loadingText = document.getElementById('loading-text');
-
-    if (!uploadText || !loadingText) return;;
-
-    // Show loading state
-    submitButton.disabled = true;
-    uploadText.classList.add('hidden');
-    loadingText.classList.remove('hidden');
-
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        showSuccess(result.url);
-        // Reset form
-        selectedFile = null;
-        (document.getElementById('file-upload') as HTMLInputElement).value = '';
-      } else {
-        throw new Error(result.error || 'Error desconocido');
-      }
-    } catch (error) {
-      showError(error instanceof Error ? error.message : 'Error al subir la imagen');
-    } finally {
-      // Reset button state
-      submitButton.disabled = false;
-      uploadText.classList.remove('hidden');
-      loadingText.classList.add('hidden');
+      `;
+      resultContainer.classList.remove('hidden');
     }
-  });
 
-  // Make functions global for inline event handlers
-  (window as Window & { handleFileChange?: typeof handleFileChange }).handleFileChange =
-    handleFileChange;
+    function showSuccess(_imageUrl: string) {
+      const resultContainer = document.getElementById('result-container');
+      if (!resultContainer) {
+        console.warn('Result container not found');
+        return;
+      }
+      
+      resultContainer.innerHTML = `
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div class="flex">
+            <div class="text-green-500 text-xl mr-3">✅</div>
+            <div class="flex-1">
+              <h3 class="text-green-800 font-medium">¡Imagen subida con éxito!</h3>
+              <p class="text-green-700 text-sm mt-1">La imagen se ha guardado en Cloudinary.</p>
+              <div class="mt-3 flex space-x-3">
+                <a href="/gallery" class="text-green-600 hover:text-green-700 font-medium">Ver en galería</a>
+                <button onclick="location.reload()" class="text-green-600 hover:text-green-700 font-medium">Subir otra</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      resultContainer.classList.remove('hidden');
+    }
+
+    // Handle form submission
+    const uploadForm = document.getElementById('upload-form');
+    if (!uploadForm) {
+      console.warn('Upload form not found');
+      return;
+    }
+    
+    uploadForm.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      if (!selectedFile) return;
+
+      const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const uploadText = document.getElementById('upload-text');
+      const loadingText = document.getElementById('loading-text');
+
+      if (!uploadText || !loadingText) {
+        console.warn('Upload text elements not found');
+        return;
+      }
+
+      // Show loading state
+      submitButton.disabled = true;
+      uploadText.classList.add('hidden');
+      loadingText.classList.remove('hidden');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          showSuccess(result.url);
+          // Reset form
+          selectedFile = null;
+          (document.getElementById('file-upload') as HTMLInputElement).value = '';
+        } else {
+          throw new Error(result.error || 'Error desconocido');
+        }
+      } catch (error) {
+        showError(error instanceof Error ? error.message : 'Error al subir la imagen');
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        uploadText.classList.remove('hidden');
+        loadingText.classList.add('hidden');
+      }
+    });
+
+    // Make functions global for inline event handlers
+    (window as Window & { handleFileChange?: typeof handleFileChange }).handleFileChange = handleFileChange;
+  }
+
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeUpload);
+  } else {
+    initializeUpload();
+  }
 </script>
